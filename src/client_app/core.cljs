@@ -1,7 +1,8 @@
 (ns ^:figwheel-hooks client-app.core
   (:require [goog.dom :as gdom]
             [reagent.dom :as rd]
-            [re-frame.core :as rf]))
+            [re-frame.core :as rf]
+            [utils.attribute :as attr]))
 
 (rf/reg-event-db
   :initialise
@@ -9,8 +10,7 @@
     {:app-config app-config}))
 
 (defn app-container []
-  [:div.container.p-4.border.border-indigo-600
-   "Application container"])
+  [:div {:class-name "container p-4 border border-indigo-600"} "Application container"])
 
 (defn mount-app-element []
   (when-let [el (gdom/getElement "app")]

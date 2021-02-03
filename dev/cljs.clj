@@ -12,7 +12,8 @@
   (dev/figwheel-config web-root))
 
 (defn start-figwheel! []
-  (dev/start-figwheel! fig-config dev-compiler-opts))
+  (->  (dev/with-devcards fig-config 'dev-cards.core)
+       (dev/start-figwheel!  dev-compiler-opts)))
 
 (defn dist-build! []
   (dist/dist-compile 'ss {}))
