@@ -8,9 +8,13 @@
   (fn [_ [_ app-config]]
     {:app-config app-config}))
 
+(defn app-container []
+  [:div.container.p-4.border.border-indigo-600
+   "Application container"])
+
 (defn mount-app-element []
   (when-let [el (gdom/getElement "app")]
-    (rd/render [:div "Hello World!"] el)
+    (rd/render app-container el)
     (rf/dispatch-sync [:initialise {:host "1"}])))
 
 (defn ^:export init []
