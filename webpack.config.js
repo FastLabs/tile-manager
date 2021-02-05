@@ -1,6 +1,6 @@
 const path = require('path');
 
-const pcssEntryPoint = './resources/styles/main.pcss'
+const pcssEntryPoint = './resources/styles/main.css'
 
 module.exports = {
     mode: 'development',
@@ -14,33 +14,43 @@ module.exports = {
     },
 
     module: {
-      rules: [
-        {
-          test: /\.pcss$/,
-          exclude: /node_modules/,
-          use: [
+        rules: [
             {
-                loader: 'file-loader',
-                options: {
-                    name: './css/main_out.css',
-                },
+                test: /\.css$/,
+                exclude: /node_modules/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: './css/main_out.css',
+                        },
+                    },
+                    {
+                        loader: 'extract-loader',
+                        options: {publicPath: "../"}
+                    },
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            importLoaders: 1,
+                        }
+                    },
+                    {
+                        loader: 'postcss-loader'
+                    }
+                ]
             },
-            {loader: 'extract-loader'},
-           /* 
-           {
-              loader: 'style-loader',
-            },*/
             {
-              loader: 'css-loader',
-              options: {
-                importLoaders: 1,
-              }
-            },
-            {
-              loader: 'postcss-loader'
+                test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name].[ext]',
+                            outputPath: 'fonts/'
+                        }
+                    }]
             }
-          ]
-        }
-      ]
+        ]
     }
-  }
+}

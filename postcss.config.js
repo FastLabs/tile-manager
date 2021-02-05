@@ -1,9 +1,11 @@
-require('precss'),
-      require('autoprefixer')
+require('precss');
+require('autoprefixer');
+
+
 module.exports = {
     plugins: {
-      
-      tailwindcss: {},
-    autoprefixer: {},
+
+        tailwindcss: {},
+        autoprefixer: {},
     }
-  }
+}

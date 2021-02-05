@@ -5,5 +5,6 @@ dist
 cljs-out
 */public/css
 */public/js-out
+*/public/fonts
 *.iml
 .nrepl-port
