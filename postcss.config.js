@@ -1,11 +1,11 @@
-require('precss');
-require('autoprefixer');
-
+//require('precss');
+//require('autoprefixer');
+//require('tailwindcss/nesting');
 
 module.exports = {
-    plugins: {
-
-        tailwindcss: {},
-        autoprefixer: {},
-    }
+    plugins: [
+        require('tailwindcss/nesting'),
+        require('tailwindcss'),
+        require('autoprefixer'),
+    ]
 }

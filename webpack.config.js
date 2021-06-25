@@ -16,7 +16,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.css$/,
+                test: /\.(css|pcss)$/i,
                 exclude: /node_modules/,
                 use: [
                     {

@@ -1,8 +1,15 @@
+@import "slice-views.pcss";
+@import "@fortawesome/fontawesome-free/css/all.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import "@fortawesome/fontawesome-free/css/all.css";
 
-.my-btn  {
-    color:  blue;
+
+.slice-view-horizontal {
+    @apply flex flex-row space-x-2;
+}
+
+.slice-view-vertical {
+    @apply flex flex-col space-y-2;
 }

@@ -3,7 +3,7 @@
             [devcards.core :refer-macros [defcard-rg defcard]]))
 
 ;TODO: title is moving to the next line. Ideally the title should be truncated
-;TODO: link the views with the entity: each entity has a spec and data associated with it
+;TODO: link the views with the entity?: each entity has a spec and data associated with it not sure if this is a good idea keep just for visualization?
 
 (defn fa-icon
   ([name]
@@ -38,23 +38,32 @@
 
 (defn view-card [{:keys [id title content] :as view-spec}]
   (with-meta
-    [:div.border-2.border-indigo-600.rounded-lg {:style {:padding 8}}
+    [:div.border.border-indigo-600.rounded-lg.shadow-md {:style {:padding 8}}
      [card-bar id title]
      [card-content content]]
     {:key id}))
 
 
-(defn slice [items]
-  [:div.flex.flex-row.space-x-2
-   [:<>
-    ^{:key "slice-controller"} [:div.order-first {:style {:width            10
-                                                          :background-color :darkgrey}}]
-    (doall
-      (for [i items]
-        (do
-          (prn (meta i))
-          (with-meta [:div.flex-grow i] (meta i)))))]])
+(defn slice-view
+  ([items]
+   (slice-view {:id "slice"} items))
+  ([{:keys [id vertical?]} items]
+   [:div {:className (if vertical? "slice-view-vertical" "slice-view-horizontal")}
+    [:<>
+     ^{:key (str id "-container")}
+     [:div.spacer]
+     (doall
+       (map-indexed (fn [index slice-element]
+                      (let [m (meta slice-element)
+                            k (if m (str id "-" (:key m)) (str id "-item-" index))]
+                        ^{:key k} [:div.flex-grow.slice-wrapper slice-element])) items))]]))
 
+;end components
+(defn gen-card [id title sample-content]
+  ^{:key id}
+  [view-card {:id      id
+              :title   title
+              :content [:div sample-content]}])
 
 (defcard-rg
   container-vew
@@ -68,13 +77,31 @@
 
 
 (defcard-rg
-  slice-view
+  slice-view-horizontal
   [:div.container.mx-auto
-   [slice
-    [^{:key "first-card"} [view-card {:id      "first-card"
-                                      :title   "Simple View"
-                                      :content [:div "Simple View Content"]}]
-     ^{:key "second-card"} [view-card {:id      "second-card"
-                                       :title   "Not A simple view"
-                                       :content [:div "Another view"]}]]]])
+   [slice-view
+    [(gen-card "first-card"
+               "Simple View"
+               "Simple View Content")
+     (gen-card "second-card"
+               "Not A simple view"
+               "Another view")]]])
 
+(defcard-rg
+  slice-view-vertical
+  [:div.container.mx-auto
+   [slice-view {:vertical? true}
+    [(gen-card "first-card"
+               "Simple View"
+               "Simple View Content")
+     (gen-card "second-card"
+               "Not A simple view"
+               "Another view")]]])
+(defcard-rg
+  composite-view
+  [:div.container.mx-auto
+   [slice-view [(gen-card "first card" "Entry Point" "This is where navigation starts")
+                [slice-view
+                 {:vertical? true}
+                 [(gen-card "second card" "First Child" "Imaginary sub-content")
+                  (gen-card "third card" "Second Child" "Imaginary sub-content")]]]]])
