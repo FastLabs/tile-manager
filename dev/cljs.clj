@@ -1,6 +1,7 @@
 (ns cljs
   (:require [cljs-dev.dev :as dev]
             [figwheel.main.api :as figwheel]
+            [app-server]
             [cljs-dev.dist-build :as dist]))
 
 (def web-root "resources")
@@ -9,11 +10,12 @@
   (dev/figwheel-opts web-root {:main 'client-app.core}))
 
 (def fig-config
-  (dev/figwheel-config web-root))
+  (merge (dev/figwheel-config web-root) {:ring-handler 'app-server/handler
+                                         :watch-dirs ["src/cljc" "src/cljs" "dev" "test/cljs" "test/cljc"]}))
 
 (defn start-figwheel! []
-  (->  (dev/with-devcards fig-config 'dev-cards.core)
-       (dev/start-figwheel!  dev-compiler-opts)))
+  (-> (dev/with-devcards fig-config 'dev-cards.core)
+      (dev/start-figwheel! dev-compiler-opts)))
 
 (defn dist-build! []
   (dist/dist-compile 'ss {}))
