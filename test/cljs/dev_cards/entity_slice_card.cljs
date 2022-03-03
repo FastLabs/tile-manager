@@ -3,4 +3,4 @@
             [devcards.core :refer-macros [defcard-rg defcard]]))
 
 (def entities {"/continents" []
-               "/country-by-id"})
+               "/country-by-id" ""})
